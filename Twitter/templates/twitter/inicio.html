@@ -17,10 +17,10 @@
 
                         <p class="card-text">{{request.user.profile.bio}}</p>
                         <h6 class="card-title font-weight-bold">
-                        100 Followers   
-                        100 Following
+                            {{request.user.profile.followers.count}} Followers   
+                            {{request.user.profile.following.count}} Following
                         </h6>
-                        <a href="#" class="btn  text-white rounded-pill">Mi perfil</a>
+                        <a href="{% url 'Profile Details' request.user %}" class="btn  text-white rounded-pill">Mi perfil</a>
                     </div>
 
                 </div>
@@ -146,9 +146,9 @@
                     Who to Follow
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><a href="https://twitter.com/playboicarti" style="text-decoration: none;color: #657787;">@playboicarti</a></li>
-                    <li class="list-group-item"><a href="https://twitter.com/LILUZIVERT" style="text-decoration: none;color: #657787;">@LILUZIVERT</a></li>
-                    <li class="list-group-item"><a href="https://twitter.com/NARUTO_kousiki" style="text-decoration: none;color: #657787;">@NARUTO_kousiki</a></li>
+                    {% for profile in profiles %}
+                    <li class="list-group-item"><a href="{% url 'Profile Details' profile %}" style="text-decoration: none;color: #657787;">@{{ profile }}</a></li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>

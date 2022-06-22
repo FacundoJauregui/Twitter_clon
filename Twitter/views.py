@@ -2,10 +2,14 @@ from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
-from .models import Profile, Post
+from .models import Profile, Post, Relationship
 from .forms import UserRegisterForm, PostForm, UserEditForm, ProfileEditForm
 from django.contrib.auth.models import User
+from django .contrib.auth.decorators import login_required
+import random
 
+
+@login_required
 def primeraVista(request):
     
     posts = Post.objects.all()
@@ -23,10 +27,15 @@ def primeraVista(request):
         
     else:
         form = PostForm()
-        
-    context = {'posts' : posts, 'form':form}
+    
+    users = User.objects.all()
+    
+    profiles = [random.choice(users) for a in range(3)]
+    
+    context = {'posts' : posts, 'form':form, 'profiles':profiles}
     
     return render(request, 'inicio.html', context)
+
 
 
 def register(request):
@@ -59,6 +68,7 @@ def profile(request, username):
     user = User.objects.get(username = username)
     posts = user.post.all()
     context = {'user':user, 'posts': posts}
+    print(user.id)
     
     return render(request, 'profile.html', context)
 
@@ -89,3 +99,23 @@ def edit_profile(request):
     context = {'u_form':u_form, 'p_form':p_form}
     
     return render(request, 'editProfile.html', context)
+
+def follow(request, username):
+    current_user = request.user
+    to_user = User.objects.get(username = username)
+    to_user_id = to_user
+    rel = Relationship(from_user = current_user, to_user = to_user_id)
+    rel.save()
+    
+    return redirect('Home')
+
+def unfollow(request, username):
+    
+    current_user = request.user
+    to_user = User.objects.get(username = username)
+    to_user_id = to_user.id
+    rel = Relationship.objects.get(from_user = current_user.id, to_user = to_user_id)
+    rel.delete()
+    
+    return redirect('Home')
+    

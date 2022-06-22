@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from Twitter.views import deletePost, edit_profile, primeraVista, profile, register
+from Twitter.views import deletePost, edit_profile, follow, primeraVista, profile, register, unfollow
 from django.contrib.auth.views import LoginView, LogoutView
 from django.conf import settings
 from django.conf.urls.static import static
@@ -13,7 +13,9 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name = 'Logout'),
     path('delete/<int:post_id>', deletePost, name ='Delete Post'),
     path('profileDetail/<str:username>/', profile, name = 'Profile Details'),
-    path('editProfile/', edit_profile, name = 'Edit Profile')
+    path('editProfile/', edit_profile, name = 'Edit Profile'),
+    path('follow/<str:username>/', follow, name = 'Follow'),
+    path('unfollow/<str:username>/', unfollow, name = 'Unfollow'),
     
 ] 
 
