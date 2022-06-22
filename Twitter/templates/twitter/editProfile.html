@@ -13,15 +13,22 @@
                     </div>
 
                     <!-- Formulario -->
-                    <form class="col pr-0" method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
+                    <form class="col pr-0" method="post" enctype="multipart/form-data">{% csrf_token %}
                         <div class="input-wrapper">
                             <label>Nombre</label>
-                            {{ u_form.first_name }}
+                                {{ u_form.first_name }}
                         </div>
                         <div class="input-wrapper">
                             <label for="user-name-id">Username</label>
-                            {{ u_form.username }}
+                                {{ u_form.username }}
+                        </div>
+                        <div class="input-wrapper">
+                            <label for="password-id">Username</label>
+                                {{ u_form.password1 }}
+                        </div>
+                        <div class="input-wrapper">
+                            <label for="password-id">Username</label>
+                                {{ u_form.password1 }}
                         </div>
                         <div class="input-wrapper">
                             <label>Bio</label>
@@ -30,7 +37,6 @@
                         <div class="input-wrapper">
                             {{ p_form.image }}
                         </div>
-
                         <button class="twitter-btn">Actualizar</button>
                     </form>
                     <!-- Formulario -->

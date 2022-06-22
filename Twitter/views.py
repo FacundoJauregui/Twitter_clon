@@ -1,8 +1,10 @@
+from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
 from .models import Profile, Post
-from .forms import UserRegisterForm, PostForm
+from .forms import UserRegisterForm, PostForm, UserEditForm, ProfileEditForm
+from django.contrib.auth.models import User
 
 def primeraVista(request):
     
@@ -50,4 +52,40 @@ def deletePost(request, post_id):
     post.delete()
     
     return redirect('Home')
+
+
+def profile(request, username):
     
+    user = User.objects.get(username = username)
+    posts = user.post.all()
+    context = {'user':user, 'posts': posts}
+    
+    return render(request, 'profile.html', context)
+
+def edit_profile(request):
+    user = request.user
+     
+    if request.method == 'POST':
+        
+        u_form = UserEditForm(request.POST, instance = user)
+        p_form = ProfileEditForm(request.POST, request.FILES, instance = user.profile)
+        
+        if u_form.is_valid() and p_form.is_valid():
+            
+            u_form.cleaned_data
+            
+            user.password1 = u_form['password1']
+            user.password2 = u_form['password2']
+            
+            u_form.save()
+            p_form.save()
+            
+            return redirect ('Home')
+            
+    else:
+        u_form = UserEditForm(instance = request.user)
+        p_form = ProfileEditForm()
+    
+    context = {'u_form':u_form, 'p_form':p_form}
+    
+    return render(request, 'editProfile.html', context)

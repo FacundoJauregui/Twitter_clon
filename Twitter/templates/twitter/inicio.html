@@ -24,9 +24,9 @@
                     </div>
 
                 </div>
-                <button id="addATweetLeft" onclick="addTweet()" type="button"
+                <a href="{% url 'Edit Profile' %}" id="addATweetLeft" onclick="addTweet()" type="button"
                 style="border-radius: 30px; font-size: 1.1rem; font-weight:bold;"
-                class="btn btn-lg btn-block mt-4 text-white ">Editar mi perfil</button>
+                class="btn btn-lg btn-block mt-4 text-white ">Editar mi perfil</a>
             </div>
         </div>
         <!-- End Barra Izquierda -->
@@ -38,7 +38,7 @@
                 <div class="d-flex">
                     <div class="col-xs">
                         <!-- Image form -->
-                        <img src="https://i.pinimg.com/736x/ea/f2/2e/eaf22e6a189f76ed24054e2ca7feb00f.jpg" alt="" class="avator">
+                        <img src="{{ request.user.profile.image.url }}" alt="" class="avator">
                     </div>
 
                     <!-- Formulario -->
@@ -74,7 +74,8 @@
                         <img src="{{post.user.profile.image.url}}"
                             alt="" class="avator">
                         <div class="tweet-header-info">
-                            {{ post.user.first_name }}<span>@{{post.user}}</span><span>{{post.timestamp|naturaltime}}</span>
+                            <a href="{% url 'Profile Details' post.user %}">
+                            {{ post.user.first_name }}</a><span>@{{post.user}}</span><span>{{post.timestamp|naturaltime}}</span>
                             <p>{{post.content}}</p>
                         </div>
                     </div>
@@ -121,11 +122,13 @@
                         </div>
 
                         <!-- DELETE -->
+                        {% if request.user == post.user %}
                         <div class="trash">
                             <a href="{% url 'Delete Post' post.id %}" style="background: white; border: none;">
                                 <i class="fa fa-trash-o" style="color:#657786; font-size: 20px" aria-hidden="true"></i>
                             </a>
                         </div>
+                        {% endif %}
                         <!-- END-DELETE -->
                     </div>
                 </div>
