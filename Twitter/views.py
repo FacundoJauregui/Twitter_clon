@@ -29,8 +29,11 @@ def primeraVista(request):
         form = PostForm()
     
     users = User.objects.all()
-    
-    profiles = [random.choice(users) for a in range(3)]
+    if len(users) > 0:
+        profiles = [random.choice(users) for a in range(3)]
+        if request.user in profiles:
+            profiles.remove(request.user)
+            profiles.append(random.choice(users))
     
     context = {'posts' : posts, 'form':form, 'profiles':profiles}
     
@@ -45,7 +48,10 @@ def register(request):
         form = UserRegisterForm(request.POST)
         
         if form.is_valid():
-            form.save()
+            aux = form.save()
+            profile = Profile()
+            profile.user = aux
+            profile.save()
             return redirect('Home')
         
     else:
