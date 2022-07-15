@@ -2,6 +2,7 @@
 Para utilizarlo/configurarlo:
 
 1- Clona el repositorio o descargalo como zip:
+
     git clone https://github.com/mundo-python/social_project.git
 
 2- Crea un ambiente virtual:
